@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Fundraising Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Login Page -->
+    <div id="login-page" class="flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
+            <div class="text-center">
+                <h1 class="text-3xl font-bold text-gray-900">Welcome Back!</h1>
+                <p class="mt-2 text-sm text-gray-600">Sign in to your fundraising dashboard.</p>
+            </div>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="text-sm font-medium text-gray-700">Email Address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="you@example.com">
+                </div>
+                <div>
+                    <label for="password" class="text-sm font-medium text-gray-700">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="••••••••">
+                </div>
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+                        Sign In
+                    </button>
+                </div>
+            </form>
+            <p class="text-center text-sm text-gray-500">
+                Don't have an account? 
+                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">Fundraising Dashboard</h1>
+                <button id="logout-button" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Logout</button>
+            </div>
+        </header>
+        
+        <main class="py-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Left Column: User Info & Rewards -->
+                    <div class="md:col-span-2 space-y-8">
+                        <!-- User Info Card -->
+                        <div class="bg-white p-6 rounded-xl shadow-md fade-in">
+                            <h2 id="intern-name" class="text-3xl font-bold text-gray-900"></h2>
+                            <p class="mt-2 text-gray-600">Here's your progress overview.</p>
+                            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="bg-indigo-50 p-6 rounded-lg">
+                                    <h3 class="text-sm font-medium text-indigo-800">Total Donations Raised</h3>
+                                    <p id="total-donations" class="mt-2 text-4xl font-bold text-indigo-600"></p>
+                                </div>
+                                <div class="bg-green-50 p-6 rounded-lg">
+                                    <h3 class="text-sm font-medium text-green-800">Your Referral Code</h3>
+                                    <div class="flex items-center mt-2">
+                                        <p id="referral-code" class="text-2xl font-mono text-green-600"></p>
+                                        <button id="copy-button" class="ml-4 p-2 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                                                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2H6zM8 5a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <p id="copy-feedback" class="text-xs text-green-600 mt-1 h-4"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rewards Section -->
+                        <div class="bg-white p-6 rounded-xl shadow-md fade-in" style="animation-delay: 0.1s;">
+                            <h3 class="text-xl font-semibold text-gray-900">Rewards & Unlockables</h3>
+                            <p class="mt-1 text-sm text-gray-600">Raise more to unlock amazing rewards!</p>
+                            <div class="mt-6 space-y-4">
+                                <div class="flex items-center p-4 bg-gray-100 rounded-lg">
+                                    <div class="text-2xl">🏆</div>
+                                    <div class="ml-4 flex-grow">
+                                        <p class="font-semibold text-gray-800">Company Swag Kit</p>
+                                        <p class="text-sm text-gray-500">Unlocked at $500</p>
+                                    </div>
+                                    <div class="px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800">Unlocked</div>
+                                </div>
+                                <div class="flex items-center p-4 bg-gray-100 rounded-lg">
+                                    <div class="text-2xl">🎟️</div>
+                                    <div class="ml-4 flex-grow">
+                                        <p class="font-semibold text-gray-800">Mentorship Session with a Senior Leader</p>
+                                        <p class="text-sm text-gray-500">Unlocked at $1,000</p>
+                                    </div>
+                                    <div class="px-3 py-1 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800">Locked</div>
+                                </div>
+                                <div class="flex items-center p-4 bg-gray-100 rounded-lg">
+                                    <div class="text-2xl">💼</div>
+                                    <div class="ml-4 flex-grow">
+                                        <p class="font-semibold text-gray-800">LinkedIn Recommendation</p>
+                                        <p class="text-sm text-gray-500">Unlocked at $2,500</p>
+                                    </div>
+                                    <div class="px-3 py-1 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800">Locked</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Leaderboard -->
+                    <div class="bg-white p-6 rounded-xl shadow-md fade-in" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold text-gray-900">Leaderboard</h3>
+                        <p class="mt-1 text-sm text-gray-600">See how you stack up against other interns.</p>
+                        <ul id="leaderboard-list" class="mt-4 space-y-3">
+                           <!-- Leaderboard items will be injected here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Mock Backend API ---
+        const mockApi = {
+            // Simulates fetching user data
+            getUserData: () => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({
+                            name: 'Alex Doe',
+                            referralCode: 'alex2025',
+                            donations: 720,
+                        });
+                    }, 500); // Simulate network delay
+                });
+            },
+            // Simulates fetching leaderboard data
+            getLeaderboard: () => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve([
+                            { rank: 1, name: 'Jessica W.', amount: 1540, icon: '🥇' },
+                            { rank: 2, name: 'Michael B.', amount: 1210, icon: '🥈' },
+                            { rank: 3, name: 'Chloe T.', amount: 980, icon: '🥉' },
+                            { rank: 4, name: 'Alex Doe', amount: 720, icon: '' },
+                            { rank: 5, name: 'Ben Carter', amount: 650, icon: '' },
+                        ]);
+                    }, 800); // Simulate network delay
+                });
+            }
+        };
+
+        // --- DOM Elements ---
+        const loginPage = document.getElementById('login-page');
+        const dashboardPage = document.getElementById('dashboard-page');
+        const loginForm = document.getElementById('login-form');
+        const logoutButton = document.getElementById('logout-button');
+        
+        const internNameEl = document.getElementById('intern-name');
+        const totalDonationsEl = document.getElementById('total-donations');
+        const referralCodeEl = document.getElementById('referral-code');
+        const copyButton = document.getElementById('copy-button');
+        const copyFeedbackEl = document.getElementById('copy-feedback');
+        const leaderboardListEl = document.getElementById('leaderboard-list');
+
+        // --- Application Logic ---
+        
+        // Function to show the dashboard
+        const showDashboard = () => {
+            loginPage.classList.add('hidden');
+            dashboardPage.classList.remove('hidden');
+            loadDashboardData();
+        };
+
+        // Function to show the login page
+        const showLoginPage = () => {
+            dashboardPage.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+            // Clear any sensitive data if needed
+            internNameEl.textContent = '';
+            totalDonationsEl.textContent = '';
+            referralCodeEl.textContent = '';
+            leaderboardListEl.innerHTML = '';
+        };
+
+        // Function to load and display data on the dashboard
+        const loadDashboardData = async () => {
+            try {
+                // Fetch user and leaderboard data in parallel
+                const [userData, leaderboardData] = await Promise.all([
+                    mockApi.getUserData(),
+                    mockApi.getLeaderboard()
+                ]);
+
+                // Populate user info
+                internNameEl.textContent = `Hello, ${userData.name}!`;
+                totalDonationsEl.textContent = `$${userData.donations.toLocaleString()}`;
+                referralCodeEl.textContent = userData.referralCode;
+
+                // Populate leaderboard
+                leaderboardListEl.innerHTML = ''; // Clear previous entries
+                leaderboardData.forEach(entry => {
+                    const isCurrentUser = entry.name === userData.name;
+                    const li = document.createElement('li');
+                    li.className = `flex items-center p-3 rounded-lg transition ${isCurrentUser ? 'bg-indigo-100' : 'bg-gray-50'}`;
+                    li.innerHTML = `
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full ${isCurrentUser ? 'bg-indigo-500 text-white' : 'bg-gray-200'} text-sm font-bold">
+                            ${entry.rank}
+                        </div>
+                        <div class="ml-3 flex-grow">
+                            <p class="font-medium text-gray-800">${entry.name} ${entry.icon}</p>
+                        </div>
+                        <div class="font-semibold text-gray-700">$${entry.amount.toLocaleString()}</div>
+                    `;
+                    leaderboardListEl.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error("Failed to load dashboard data:", error);
+                // Optionally display an error message to the user
+                dashboardPage.innerHTML = '<p class="text-center text-red-500">Could not load data. Please try again later.</p>';
+            }
+        };
+
+        // --- Event Listeners ---
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent actual form submission
+            // No validation needed for this dummy app
+            showDashboard();
+        });
+
+        // Handle logout
+        logoutButton.addEventListener('click', () => {
+            showLoginPage();
+        });
+
+        // Handle copy referral code
+        copyButton.addEventListener('click', () => {
+            const codeToCopy = referralCodeEl.textContent;
+            
+            // A fallback for navigator.clipboard for cross-origin iframes
+            const textArea = document.createElement("textarea");
+            textArea.value = codeToCopy;
+            textArea.style.position = "fixed"; // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                copyFeedbackEl.textContent = 'Copied!';
+            } catch (err) {
+                copyFeedbackEl.textContent = 'Failed to copy!';
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+
+            setTimeout(() => {
+                copyFeedbackEl.textContent = '';
+            }, 2000);
+        });
+
+        // Check if user is "logged in" on page load (for development/refreshing)
+        // In a real app, you'd check a token in localStorage or a cookie.
+        // For this demo, we'll just start at the login page.
+        document.addEventListener('DOMContentLoaded', () => {
+            showLoginPage();
+        });
+
+    </script>
+</body>
+</html>
